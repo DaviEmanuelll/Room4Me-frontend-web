@@ -1,6 +1,6 @@
 <h1 align="center">
-![Logo-Room4Me](https://user-images.githubusercontent.com/88398990/232786245-e97e7520-1617-41b6-bdeb-cb86cc906f4b.svg)
-![Logo png](https://user-images.githubusercontent.com/88398990/156489186-24d246c7-fa32-4793-ae59-e29bc99e09ce.png)
+
+![Logo-Room4Me](https://user-images.githubusercontent.com/88398990/232788071-a9f4cdb9-49ee-4479-8b01-04c600fdec08.svg)
 
 </h1>
 
@@ -12,7 +12,7 @@
 	:house:&nbsp; Room4Me Web - In development... &nbsp; :house: </br>
 </h4>
 
-![image](https://img.shields.io/github/license/RiadOliveira/Room4Me-web)
+![image](https://img.shields.io/github/license/DaviEmanuelll/Room4Me-frontend-web)
 
 Contents
 =================
