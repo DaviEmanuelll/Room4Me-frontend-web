@@ -1,9 +1,12 @@
-import { Container } from './styles';
+import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
+import RegisterBackgroundImageUrl from '../../assets/signup-background.jpg';
 
 export const StepTwoRegister = () => {
   return (
-    <Container>
-      <div>Registro 2</div>
-    </Container>
+    <>
+      <LoginAndRegisterWrapper
+        imgUrl={RegisterBackgroundImageUrl}
+      ></LoginAndRegisterWrapper>
+    </>
   );
 };

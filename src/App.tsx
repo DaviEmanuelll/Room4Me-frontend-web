@@ -1,5 +1,11 @@
 import { Routes } from 'routes';
+import { GlobalStyle } from 'components/GlobalStyle';
 
 export const App = () => {
-  return <Routes />;
+  return (
+    <>
+      <GlobalStyle />
+      <Routes />
+    </>
+  );
 };
