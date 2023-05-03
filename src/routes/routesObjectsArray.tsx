@@ -2,8 +2,7 @@ import { HomePage } from 'pages/HomePage';
 import { RouteObject } from 'react-router';
 import { routesAddresses } from './routesAddresses';
 import { LoginPage } from 'pages/LoginPage';
-import { StepOneRegister } from 'pages/StepOneRegister';
-import { StepTwoRegister } from 'pages/StepTwoRegister';
+import { Register } from 'pages/Register';
 
 const homePage: RouteObject = {
   path: routesAddresses.homePage,
@@ -14,13 +13,9 @@ const loginPage: RouteObject = {
   path: routesAddresses.loginPage,
   element: <LoginPage />,
 };
-const stepOneRegister: RouteObject = {
-  path: routesAddresses.stepOneRegister,
-  element: <StepOneRegister />,
-};
-const stepTwoRegister: RouteObject = {
-  path: routesAddresses.stepTwoRegister,
-  element: <StepTwoRegister />,
+const register: RouteObject = {
+  path: routesAddresses.register,
+  element: <Register />,
 };
 
-export default [homePage, loginPage, stepOneRegister, stepTwoRegister];
+export default [homePage, loginPage, register];

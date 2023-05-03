@@ -1,12 +1,13 @@
-import { Container } from './styles';
 import { MainContainer } from './styles';
 import { useState } from 'react';
 import loginBackgroundImageUrl from 'assets/login-background.png';
 import { InfoContainer } from 'components/InfoContainer';
 import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
-import { TextField } from 'components/TextField';
+import { TextField } from 'components/Inputs';
 import { Checkbox } from 'components/Checkbox';
-import { TextFieldLabel } from 'components/TextFieldLabel';
+import { InputLabel } from 'components/InputLabels';
+import nameLogo from 'assets/logo-name.svg';
+import { PrimaryButton } from 'components/Buttons';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -59,12 +60,12 @@ export const LoginPage = () => {
               </div>
               <div className="input-group">
                 <div id="email-group">
-                  <TextFieldLabel
+                  <InputLabel
                     htmlFor="email-textfield"
                     style={{ color: emailError ? '#ff0033' : '' }}
                   >
                     Email*
-                  </TextFieldLabel>
+                  </InputLabel>
                   <TextField
                     type="text"
                     id="email-textfield"
@@ -77,12 +78,12 @@ export const LoginPage = () => {
                   </div>
                 </div>
                 <div id="password-group">
-                  <TextFieldLabel
+                  <InputLabel
                     htmlFor="password-textfield"
                     style={{ color: passwordError ? '#ff0033' : '' }}
                   >
                     Senha*
-                  </TextFieldLabel>
+                  </InputLabel>
                   <TextField
                     type="password"
                     id="password-textfield"

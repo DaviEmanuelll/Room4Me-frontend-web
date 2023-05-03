@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TextFieldLabel = styled.label`
+export const InputLabel = styled.label`
   font-size: 16px;
   position: absolute;
   margin-left: 20px;
@@ -8,5 +8,4 @@ export const TextFieldLabel = styled.label`
   background-color: #fffcf9;
   border-left: solid 4px #fffcf9;
   border-right: solid 4px #fffcf9;
-
 `;

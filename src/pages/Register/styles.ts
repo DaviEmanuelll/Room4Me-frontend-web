@@ -8,8 +8,12 @@ export const MainContainer = styled.div`
   padding: 0;
   height: 100%;
 
-  @media (min-width: 1250px) {
-    margin: 0px 900px 0px 100px;
+  @media (min-width: 1300px) {
+    margin: 0px 100px 0px 900px;
+  }
+
+  button {
+    margin-top: 12px;
   }
 
   main {
@@ -38,6 +42,11 @@ export const MainContainer = styled.div`
     flex-direction: column;
     gap: 20px;
     margin: 30px 0px 10px 0px;
+  }
+
+  .buttons-group {
+    display: flex;
+    gap: 10px;
   }
 
   .extra-options {

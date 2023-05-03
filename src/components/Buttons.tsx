@@ -17,6 +17,20 @@ export const PrimaryButton = styled.button`
   }
 `;
 
-export const RoundButton = styled.button`
-  
-`
+export const OutlinedButton = styled.button`
+  background-color: transparent;
+  color: #ff6700;
+  border: 2px solid #ff6700;
+  border-radius: 12px;
+  font-size: 16px;
+  padding: 8px 24px;
+  width: 100%;
+  height: 40px;
+  outline: none;
+
+  &:hover {
+    color: #ffffff;
+    background-color: #ff6700;
+    cursor: pointer;
+  }
+`;
