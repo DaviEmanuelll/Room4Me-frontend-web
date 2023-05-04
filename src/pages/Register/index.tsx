@@ -2,6 +2,9 @@ import { MainContainer } from './styles';
 import { useState } from 'react';
 import registerBackgroundImageUrl from 'assets/signup-background.jpg';
 import nameLogo from 'assets/logo-name.svg';
+import addImageIcon from 'assets/add-img-icon.svg';
+import stepOneIcon from 'assets/signup-state-one.svg';
+import stepTwoIcon from 'assets/signup-state-two.svg';
 import { OutlinedButton, PrimaryButton } from 'components/Buttons';
 import { InfoContainer } from 'components/InfoContainer';
 import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
@@ -25,7 +28,7 @@ export const Register = () => {
     setPasswordConfirmationErrorMessage,
   ] = useState<string>('');
 
-  const [profileImageUrl, setProfileImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [gender, setGender] = useState<string>('');
 
@@ -33,8 +36,21 @@ export const Register = () => {
     useState<string>('');
   const [nameErrorMessage, setNameErrorMessage] = useState<string>('');
 
+  const [nameError, setNameError] = useState<boolean>(false);
+
+  //lembrar de deixar false
   const [isFirstStepComplete, setIsFirstStepComplete] =
     useState<boolean>(false);
+
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = event => {
+      const image = event.target.result;
+      setImageUrl(image);
+    };
+  }
 
   function handleFirstStepSubmit() {
     let isValidFirstStep = true;
@@ -92,8 +108,16 @@ export const Register = () => {
   }
 
   function handleSecondStepSubmit() {
-    if (name === '' || name === undefined)
+    if (name === '' || name === undefined) {
       setNameErrorMessage('Preencha o campo de nome');
+      setNameError(true);
+    } else if (name.length < 8) {
+      setNameErrorMessage('O campo de nome deve conter no mínimo 8 caracteres');
+      setNameError(true);
+    } else {
+      setNameErrorMessage('');
+      setNameError(false);
+    }
   }
 
   const renderFirstStepRegistration = (
@@ -103,7 +127,10 @@ export const Register = () => {
           <main>
             <div className="header">
               <img src={nameLogo} alt="Logo Room4Me" id="logo" />
-              <h2>Crie sua conta</h2>
+              <div className="header-info">
+                <h2>Crie sua conta</h2>
+                <img src={stepOneIcon} alt="step one icon" />
+              </div>
             </div>
             <div className="input-group">
               <div id="email-group">
@@ -180,20 +207,49 @@ export const Register = () => {
   const renderSecondStepRegistration = (
     <LoginAndRegisterWrapper imgUrl={registerBackgroundImageUrl}>
       <MainContainer>
-        <InfoContainer>
+        <InfoContainer style={{ height: '74%' }}>
           <main>
             <div className="header">
               <img src={nameLogo} alt="Logo Room4Me" id="logo" />
-              <h2>Crie sua conta</h2>
+              <div className="header-info">
+                <h2>Crie sua conta</h2>
+                <img src={stepTwoIcon} alt="step one icon" />
+              </div>
+            </div>
+            <div className="input-group">
+              <label htmlFor="profile-image-input">Foto de perfil</label>
+              <div>
+                <div id="profile-image-group">
+                  <img
+                    id="profile-image"
+                    src={imageUrl || addImageIcon}
+                    alt="add image icon"
+                  />
+                </div>
+                <input
+                  type="file"
+                  id="profile-image-input"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </div>
             </div>
             <div className="input-group">
               <div id="name-group">
-                <InputLabel htmlFor="name-textfield">Nome*</InputLabel>
+                <InputLabel
+                  htmlFor="name-textfield"
+                  style={{
+                    color: nameError ? '#ff0033' : '',
+                  }}
+                >
+                  Nome*
+                </InputLabel>
                 <TextField
                   type="text"
                   id="name-textfield"
                   value={name}
                   onChange={event => setName(event.target.value)}
+                  style={{ borderColor: nameError ? '#ff0033' : '' }}
                 />
                 <div className="span-area">
                   <span id="name-error-span">{nameErrorMessage}</span>

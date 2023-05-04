@@ -54,7 +54,7 @@ export const LoginPage = () => {
               <div className="header">
                 <img src={nameLogo} alt="Logo Room4Me" id="logo" />
                 <h2>Acesse sua conta</h2>
-                <a id="create-new-account" href="#">
+                <a id="create-new-account" href="/register">
                   ou crie uma nova
                 </a>
               </div>

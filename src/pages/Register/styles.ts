@@ -13,7 +13,7 @@ export const MainContainer = styled.div`
   }
 
   button {
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   main {
@@ -35,6 +35,17 @@ export const MainContainer = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 15px;
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
   }
 
   .input-group {
@@ -46,7 +57,8 @@ export const MainContainer = styled.div`
 
   .buttons-group {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    margin: 15px 0px;
   }
 
   .extra-options {
@@ -59,6 +71,17 @@ export const MainContainer = styled.div`
   #logo {
     width: 212px;
     height: 48px;
+  }
+
+  #profile-image-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    img {
+      height: 80px;
+      width: 80px;
+    }
   }
 
   #create-new-account {
