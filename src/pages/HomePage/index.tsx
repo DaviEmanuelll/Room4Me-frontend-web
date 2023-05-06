@@ -1,5 +1,6 @@
 import Card from 'components/Card';
 import { Container } from './styles';
+import Navbar from 'components/Navbar';
 
 const cardExample = {
   street: 'Maria de Medeiros Miranda',
@@ -14,7 +15,8 @@ const cardExample = {
 export const HomePage = () => {
   return (
     <Container>
-      <Card {...cardExample}></Card>
+      <Navbar />
+      {/*<Card {...cardExample}></Card>*/}
     </Container>
   );
 };

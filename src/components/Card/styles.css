@@ -5,10 +5,10 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column;
+  margin: 50px;
 }
 
 .main-container:hover {
-  cursor: pointer;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -29,7 +29,33 @@
   border: none;
   background-color: rgba(255, 252, 249, 0.7);
   border-radius: 100%;
+}
 
+#arrow-back {
+  top: 42%;
+  left: 12px;
+}
+
+#arrow-forward {
+  top: 42%;
+  right: 12px;
+}
+
+#image-selector-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  gap: 5px;
+  top: 57%;
+  right: 35%;
+}
+
+#image-selector {
+  color: #4c4652;
+  font-weight: bold;
+  font-size: 80px;
+  cursor: pointer;
 }
 
 .image-slider button:hover {

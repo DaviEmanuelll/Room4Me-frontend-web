@@ -34,5 +34,3 @@ export const OutlinedButton = styled.button`
     cursor: pointer;
   }
 `;
-
-

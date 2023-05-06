@@ -40,6 +40,25 @@ const Card = (props: CardProps) => {
 
   const [isFavorite, setIsFavorite] = useState<boolean>(props.isFavorite);
 
+  const handleGoToPreviousImage = () => {
+    const isFirstImage: boolean = currentImageSliderIndex === 0;
+    const newIndex: number = isFirstImage
+      ? exampleImages.length - 1
+      : currentImageSliderIndex - 1;
+    setCurrentImageSliderIndex(newIndex);
+  };
+
+  const handleGoToNextImage = () => {
+    const isLastImage: boolean =
+      currentImageSliderIndex === exampleImages.length - 1;
+    const newIndex: number = isLastImage ? 0 : currentImageSliderIndex + 1;
+    setCurrentImageSliderIndex(newIndex);
+  };
+
+  const handleGoToEspecificImage = imageIndex => {
+    setCurrentImageSliderIndex(imageIndex);
+  };
+
   const handleFavoriteClick = () => {
     setIsFavorite(!isFavorite);
   };
@@ -49,12 +68,29 @@ const Card = (props: CardProps) => {
       <div className="main-container">
         <div className="image-slider">
           <div className="buttons-group">
-            <button id="arrow-back">
+            <button id="arrow-back" onClick={handleGoToPreviousImage}>
               <img src={arrowBack} alt="<" />
             </button>
-            <button id="arrow-forward">
+            <button id="arrow-forward" onClick={handleGoToNextImage}>
               <img src={arrowForward} alt=">" />
             </button>
+            <div id="image-selector-container">
+              {exampleImages.map((image, imageIndex) => (
+                <div
+                  id="image-selector"
+                  key={imageIndex}
+                  onClick={() => handleGoToEspecificImage(imageIndex)}
+                  style={{
+                    color:
+                      currentImageSliderIndex === imageIndex
+                        ? '#FF6700'
+                        : '#4C4652',
+                  }}
+                >
+                  -
+                </div>
+              ))}
+            </div>
           </div>
           <div
             className="images-container"
