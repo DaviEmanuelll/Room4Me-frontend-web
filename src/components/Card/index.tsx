@@ -87,7 +87,7 @@ const Card = (props: CardProps) => {
                         : '#4C4652',
                   }}
                 >
-                  -
+                  •
                 </div>
               ))}
             </div>

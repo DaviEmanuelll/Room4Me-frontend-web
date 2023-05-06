@@ -5,7 +5,6 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  margin: 50px;
 }
 
 .main-container:hover {
@@ -45,16 +44,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   position: absolute;
-  gap: 5px;
-  top: 57%;
-  right: 35%;
+  gap: 1px;
+  top:90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #image-selector {
   color: #4c4652;
   font-weight: bold;
-  font-size: 80px;
+  font-size: 45px;
   cursor: pointer;
 }
 

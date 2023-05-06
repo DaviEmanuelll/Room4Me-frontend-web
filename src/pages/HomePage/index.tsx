@@ -16,7 +16,7 @@ export const HomePage = () => {
   return (
     <Container>
       <Navbar />
-      {/*<Card {...cardExample}></Card>*/}
+      <Card {...cardExample}></Card>
     </Container>
   );
 };

@@ -20,7 +20,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const renderUnloggedNavbar = (
+  const renderNavbar = (
     <nav>
       <div className="room4me-logo">
         <img
@@ -44,11 +44,17 @@ const Navbar = () => {
       </ul>
       <div className="login-container">
         {/*<PrimaryButton>Entrar</PrimaryButton>*/}
-        <label htmlFor="">Lucas Paulino</label>
+        <img src="" alt="" id="user-profile-image" />
+        <label
+          htmlFor="user-profile-image"
+          style={{ display: isMobile ? 'none' : '' }}
+        >
+          Lucas Paulino
+        </label>
       </div>
     </nav>
   );
-  return <>{renderUnloggedNavbar}</>;
+  return <>{renderNavbar}</>;
 };
 
 export default Navbar;
