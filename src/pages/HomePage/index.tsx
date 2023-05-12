@@ -11,6 +11,7 @@ import homeBannerOne from 'assets/homeBannerOne.svg';
 import homeBannerTwo from 'assets/homeBannerTwo.svg';
 import homePageSection3Figure from 'assets/homePageSection3Figure.svg';
 import homePageSection2Figure from 'assets/homePageSection2Figure.svg';
+import Card from 'components/Card';
 
 /*const cardExample = {
   street: 'Maria de Medeiros Miranda',

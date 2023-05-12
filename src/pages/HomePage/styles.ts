@@ -62,14 +62,21 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
 
+    @media (max-width: 1000px) {
+      height: 150vh;
+      margin-bottom: 50px;
+      padding-top: 40px;
+    }
+
     .banner-section {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      gap: 60px;
+      gap: 75px;
 
       @media (max-width: 1000px) {
         flex-direction: column;
+        gap: 40px;
       }
 
       .banner-subsection {
@@ -81,7 +88,7 @@ export const Container = styled.div`
       }
 
       .banner-card {
-        width: 560px;
+        width: 540px;
         height: 480px;
         background-color: var(--secondary-background);
         border-radius: 12px;
@@ -89,6 +96,10 @@ export const Container = styled.div`
         position: relative;
         overflow: hidden;
         z-index: 1;
+
+        @media (max-width: 1000px) {
+          width: 800px;
+        }
       }
 
       .banner-image {
@@ -114,6 +125,7 @@ export const Container = styled.div`
   .third-section {
     display: flex;
     justify-content: space-around;
+    height: 90%;
 
     #info-group {
       display: flex;
