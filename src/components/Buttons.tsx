@@ -34,3 +34,21 @@ export const OutlinedButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export const SecondaryButton = styled.button`
+  background-color: #ffffff;
+  color: #ff6700;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  padding: 8px 24px;
+  width: 100%;
+  height: 40px;
+  outline: none;
+
+  &:hover {
+    color: #ffffff;
+    background-color: #ff6700;
+    cursor: pointer;
+  }
+`;

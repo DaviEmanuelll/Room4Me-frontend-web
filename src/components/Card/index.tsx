@@ -8,7 +8,6 @@ import fotoQuarto from 'assets/exampleImages/quarto.jpg';
 import fotoSala from 'assets/exampleImages/sala.jpg';
 
 import { useState } from 'react';
-import ImageSlider from 'components/ImageSlider';
 interface CardProps {
   street: string;
   address: string;
@@ -133,7 +132,7 @@ const Card = (props: CardProps) => {
               </div>
               <div id="value">
                 <label htmlFor="price">Valor</label>
-                <p id="price">{props.value}</p>
+                <p id="price">{` R$ ${props.value}`}</p>
               </div>
             </div>
           </div>

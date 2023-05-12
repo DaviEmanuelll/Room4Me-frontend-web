@@ -8,6 +8,11 @@ export const MainContainer = styled.div`
   padding: 0;
   height: 100%;
 
+  * {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+  }
+
   @media (min-width: 1300px) {
     margin: 0px 100px 0px 900px;
   }
