@@ -10,7 +10,7 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-around;
     background-color: #ffdac2;
-    height: 80vh;
+    height: 78vh;
 
     img {
       width: 510px;

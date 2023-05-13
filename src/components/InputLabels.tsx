@@ -5,7 +5,7 @@ export const InputLabel = styled.label`
   position: absolute;
   margin-left: 20px;
   transform: translateY(-50%);
-  background-color: #fffcf9;
-  border-left: solid 4px #fffcf9;
-  border-right: solid 4px #fffcf9;
+  background-color: ${props => props.color || '#fffcf9'};
+  border-left: solid 4px ${props => props.color || '#fffcf9'};
+  border-right: solid 4px ${props => props.color || '#fffcf9'};
 `;
