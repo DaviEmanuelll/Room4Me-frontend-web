@@ -1,127 +1,110 @@
-import { MainContainer } from './styles';
-import { useState } from 'react';
 import registerBackgroundImageUrl from 'assets/signup-background.jpg';
 import nameLogo from 'assets/logo-name.svg';
 import addImageIcon from 'assets/add-img-icon.svg';
 import stepOneIcon from 'assets/signup-state-one.svg';
 import stepTwoIcon from 'assets/signup-state-two.svg';
+
+import { MainContainer } from './styles';
+import { useCallback, useState } from 'react';
 import { OutlinedButton, PrimaryButton } from 'components/Buttons';
 import { InfoContainer } from 'components/InfoContainer';
 import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
 import { Select, TextField } from 'components/Inputs';
 import { InputLabel } from 'components/InputLabels';
 
+import * as yup from 'yup';
+import { Gender } from 'types/Gender';
+
 export const Register = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [passwordConfirmationError, setPasswordConfirmationError] =
-    useState<boolean>(false);
+    useState('');
 
-  const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('');
-  const [
-    passwordConfirmationErrorMessage,
-    setPasswordConfirmationErrorMessage,
-  ] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [gender, setGender] = useState<Gender>('Male');
 
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [gender, setGender] = useState<string>('');
+  const [isFirstStepComplete, setIsFirstStepComplete] = useState(false);
 
-  const [profileImageUrlErrorMessage, setProfileImageUrlErrorMessage] =
-    useState<string>('');
-  const [nameErrorMessage, setNameErrorMessage] = useState<string>('');
-
-  const [nameError, setNameError] = useState<boolean>(false);
-
-  //lembrar de deixar false
-  const [isFirstStepComplete, setIsFirstStepComplete] =
-    useState<boolean>(false);
-
-  function handleImageChange(event) {
-    const file = event.target.files[0];
+  const handleImageChange = ({
+    currentTarget: { files },
+  }: React.FormEvent<HTMLInputElement>) => {
+    if (files === null) return;
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = event => {
-      const image = event.target.result;
-      setImageUrl(image);
+    reader.readAsDataURL(files[0]);
+
+    reader.onload = ({ target }) => {
+      if (target === null) return;
+      setImageUrl(target.result as string);
     };
-  }
+  };
 
-  function handleFirstStepSubmit() {
-    let isValidFirstStep = true;
+  const handleFirstStepSubmit = useCallback(async () => {
+    const schema = yup.object().shape({
+      email: yup
+        .string()
+        .required('Preencha o campo de email')
+        .email('O email deve ser um endereço válido'),
+      password: yup
+        .string()
+        .required('Preencha o campo de senha')
+        .min(8, 'A senha deve conter pelo menos 8 caracteres'),
+      passwordConfirmation: yup
+        .string()
+        .required('Preencha o campo de confirmação de senha')
+        .oneOf([yup.ref('password')], 'As senhas devem ser iguais'),
+    });
 
-    if (email === '' || email === undefined) {
-      isValidFirstStep = false;
-      setEmailErrorMessage('Preencha o campo de email');
-      setEmailError(true);
-    } else if (email.indexOf('@') === -1) {
-      isValidFirstStep = false;
-      setEmailErrorMessage('O email deve ser um endereço válido');
-      setEmailError(true);
-    } else {
-      setEmailErrorMessage('');
-      setEmailError(false);
-    }
-
-    if (password === '' || password === undefined) {
-      isValidFirstStep = false;
-      setPasswordErrorMessage('Preencha o campo de senha');
-      setPasswordError(true);
-    } else if (password.length < 8) {
-      isValidFirstStep = false;
-      setPasswordErrorMessage('A senha deve conter pelo menos 8 caracteres');
-      setPasswordError(true);
-    } else {
-      setPasswordErrorMessage('');
-      setPasswordError(false);
-    }
-
-    if (passwordConfirmation === '' || passwordConfirmation === undefined) {
-      isValidFirstStep = false;
-      setPasswordConfirmationErrorMessage(
-        'Preencha o campo de confirmação de senha',
+    try {
+      await schema.validate(
+        {
+          email,
+          password,
+          passwordConfirmation,
+        },
+        { abortEarly: false },
       );
-      setPasswordConfirmationError(true);
-    } else if (passwordConfirmation.length < 8) {
-      isValidFirstStep = false;
-      setPasswordConfirmationErrorMessage(
-        'A senha deve conter pelo menos 8 caracteres',
-      );
-      setPasswordConfirmationError(true);
-    } else if (passwordConfirmation !== password) {
-      isValidFirstStep = false;
-      setPasswordConfirmationErrorMessage('As senhas devem ser iguais');
-      setPasswordConfirmationError(true);
-    } else {
-      setPasswordConfirmationErrorMessage('');
-      setPasswordConfirmationError(false);
-    }
-
-    if (isValidFirstStep) {
       setIsFirstStepComplete(true);
-    }
-  }
+    } catch (error) {
+      const errorStates = {
+        email: setEmailError,
+        password: setPasswordError,
+        passwordConfirmation: setPasswordConfirmationError,
+      };
+      const parsedError = error as yup.ValidationError;
 
-  function handleSecondStepSubmit() {
-    if (name === '' || name === undefined) {
-      setNameErrorMessage('Preencha o campo de nome');
-      setNameError(true);
-    } else if (name.length < 8) {
-      setNameErrorMessage('O campo de nome deve conter no mínimo 8 caracteres');
-      setNameError(true);
-    } else {
-      setNameErrorMessage('');
-      setNameError(false);
+      const keysAlreadyVisited: string[] = [];
+      parsedError.inner.forEach(({ path, message }) => {
+        const key = path as keyof typeof errorStates;
+        if (keysAlreadyVisited.includes(key)) return;
+
+        errorStates[key](message);
+        keysAlreadyVisited.push(key);
+      });
     }
-  }
+  }, [email, password, passwordConfirmation]);
+
+  const handleSecondStepSubmit = useCallback(async () => {
+    const schema = yup.object().shape({
+      name: yup.string().required('Preencha o campo de nome'),
+    });
+
+    try {
+      await schema.validate({ name }, { abortEarly: false });
+    } catch (error) {
+      const parsedError = error as yup.ValidationError;
+      setNameError(parsedError.message);
+    }
+  }, [name]);
 
   const renderFirstStepRegistration = (
-    <LoginAndRegisterWrapper imgUrl={registerBackgroundImageUrl}>
+    <LoginAndRegisterWrapper imageUrl={registerBackgroundImageUrl}>
       <MainContainer>
         <InfoContainer>
           <main>
@@ -144,11 +127,14 @@ export const Register = () => {
                   type="text"
                   id="email-textfield"
                   value={email}
-                  onChange={event => setEmail(event.target.value)}
+                  onChange={({ target: { value } }) => {
+                    setEmail(value);
+                    setEmailError('');
+                  }}
                   style={{ borderColor: emailError ? '#ff0033' : '' }}
                 />
                 <div className="span-area">
-                  <span id="email-error-span">{emailErrorMessage}</span>
+                  <span id="email-error-span">{emailError}</span>
                 </div>
               </div>
               <div id="password-group">
@@ -162,11 +148,14 @@ export const Register = () => {
                   type="password"
                   id="password-textfield"
                   value={password}
-                  onChange={event => setPassword(event.target.value)}
+                  onChange={({ target: { value } }) => {
+                    setPassword(value);
+                    setPasswordError('');
+                  }}
                   style={{ borderColor: passwordError ? '#ff0033' : '' }}
                 />
                 <div className="span-area">
-                  <span id="password-error-span">{passwordErrorMessage}</span>
+                  <span id="password-error-span">{passwordError}</span>
                 </div>
               </div>
               <div id="password-confirmation-group">
@@ -180,16 +169,17 @@ export const Register = () => {
                   type="password"
                   id="password-confirmation-textfield"
                   value={passwordConfirmation}
-                  onChange={event =>
-                    setPasswordConfirmation(event.target.value)
-                  }
+                  onChange={({ target: { value } }) => {
+                    setPasswordConfirmation(value);
+                    setPasswordConfirmationError('');
+                  }}
                   style={{
                     borderColor: passwordConfirmationError ? '#ff0033' : '',
                   }}
                 />
                 <div className="span-area">
                   <span id="password-confirmation-error-span">
-                    {passwordConfirmationErrorMessage}
+                    {passwordConfirmationError}
                   </span>
                 </div>
               </div>
@@ -205,7 +195,7 @@ export const Register = () => {
   );
 
   const renderSecondStepRegistration = (
-    <LoginAndRegisterWrapper imgUrl={registerBackgroundImageUrl}>
+    <LoginAndRegisterWrapper imageUrl={registerBackgroundImageUrl}>
       <MainContainer>
         <InfoContainer style={{ height: '74%' }}>
           <main>
@@ -248,11 +238,14 @@ export const Register = () => {
                   type="text"
                   id="name-textfield"
                   value={name}
-                  onChange={event => setName(event.target.value)}
+                  onChange={({ target: { value } }) => {
+                    setName(value);
+                    setNameError('');
+                  }}
                   style={{ borderColor: nameError ? '#ff0033' : '' }}
                 />
                 <div className="span-area">
-                  <span id="name-error-span">{nameErrorMessage}</span>
+                  <span id="name-error-span">{nameError}</span>
                 </div>
               </div>
             </div>
@@ -261,7 +254,10 @@ export const Register = () => {
                 <InputLabel htmlFor="gender-select">Gênero*</InputLabel>
                 <Select
                   id="gender-select"
-                  onChange={event => setGender(event.target.value)}
+                  value={gender}
+                  onChange={({ target: { value } }) =>
+                    setGender(value as Gender)
+                  }
                 >
                   <option value="Masculino">Masculino</option>
                   <option value="Feminino">Feminino</option>
