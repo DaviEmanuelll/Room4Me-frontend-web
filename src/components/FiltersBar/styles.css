@@ -7,6 +7,7 @@
   height: 100vh;
   background-color: #f4f4f4;
   border-right: 3px solid #4c46522a;
+  position: fixed;
 
   @media (max-width: 800px) {
     width: 35%;

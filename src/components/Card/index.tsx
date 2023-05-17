@@ -8,6 +8,7 @@ import fotoQuarto from 'assets/exampleImages/quarto.jpg';
 import fotoSala from 'assets/exampleImages/sala.jpg';
 
 import { useState } from 'react';
+
 interface CardProps {
   street: string;
   address: string;
