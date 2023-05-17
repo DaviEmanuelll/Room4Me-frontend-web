@@ -1,6 +1,6 @@
-import Navbar from 'components/Navbar';
-import Grid, { Container } from './styles';
-import FiltersBar from 'components/FiltersBar';
+import { Navbar } from 'components/Navbar';
+import { Container } from './styles';
+import { FiltersBar } from 'components/FiltersBar';
 import Card from 'components/Card';
 import { useState } from 'react';
 
@@ -105,11 +105,8 @@ export const SearchPage = () => {
         setAllowPets={setAllowPets}
       />
       <Container>
-        <Grid columns={4} gap="1px">
-          {cardsData.map((cardProps, index) => (
-            <Card key={index} {...cardProps} />
-          ))}
-        </Grid>
+        <FiltersBar />
+        <main></main>
       </Container>
     </>
   );

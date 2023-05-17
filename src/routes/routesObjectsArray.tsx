@@ -28,5 +28,4 @@ const announcePage: RouteObject = {
   element: <AnnouncePage />,
 };
 
-
 export default [homePage, loginPage, register, searchPage, announcePage];

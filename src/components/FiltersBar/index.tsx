@@ -25,7 +25,7 @@ interface FiltersBarProps {
   setAllowPets: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FiltersBar = ({
+export const FiltersBar = ({
   region,
   setRegion,
   orderBy,
@@ -123,5 +123,3 @@ const FiltersBar = ({
     </div>
   );
 };
-
-export default FiltersBar;
