@@ -18,7 +18,8 @@ export const createUserSession = async (sessionsData: SessionsData) => {
     sessionsData,
   );
 
-  return { user: data, token: headers.getAuthorization };
+  const token = headers.authorization as string;
+  return { user: data, token };
 };
 
 export const updateUser = async (userData: FormData) => {

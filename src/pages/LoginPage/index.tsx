@@ -16,7 +16,7 @@ import * as yup from 'yup';
 import { createUserSession } from 'services/userServices';
 
 export const LoginPage = () => {
-  const { userData } = useAuth();
+  const { userData, setUserLocalData } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');
@@ -50,16 +50,21 @@ export const LoginPage = () => {
         { abortEarly: false },
       );
 
-      const user = await createUserSession({ email, password });
+      const userData = await createUserSession({ email, password });
+      setUserLocalData(userData);
     } catch (error) {
+      if (!(error instanceof yup.ValidationError)) {
+        alert('Problema Inesperado!');
+        return;
+      }
+
       const errorStates = {
         email: setEmailError,
         password: setPasswordError,
       };
-      const parsedError = error as yup.ValidationError;
 
       const keysAlreadyVisited: string[] = [];
-      parsedError.inner.forEach(({ path, message }) => {
+      error.inner.forEach(({ path, message }) => {
         const key = path as keyof typeof errorStates;
         if (keysAlreadyVisited.includes(key)) return;
 
@@ -67,7 +72,7 @@ export const LoginPage = () => {
         keysAlreadyVisited.push(key);
       });
     }
-  }, [email, password]);
+  }, [email, password, setUserLocalData]);
 
   return (
     <>
