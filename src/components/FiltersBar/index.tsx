@@ -3,24 +3,48 @@ import './styles.css';
 import { Select, TextField } from 'components/Inputs';
 import filterIcon from 'assets/filter-icon.svg';
 import { Checkbox } from 'components/Checkbox';
-import { useState } from 'react';
 
-const FiltersBar = () => {
-  const [region, setRegion] = useState<string>('');
-  const [orderBy, setOrderBy] = useState<string>('');
+interface FiltersBarProps {
+  region: string;
+  setRegion: React.Dispatch<React.SetStateAction<string>>;
+  orderBy: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  bedroomType: string;
+  setBedroomType: React.Dispatch<React.SetStateAction<string>>;
+  maxValue: number;
+  setMaxValue: React.Dispatch<React.SetStateAction<number>>;
+  bedrooms: number;
+  setBedrooms: React.Dispatch<React.SetStateAction<number>>;
+  bathrooms: number;
+  setBathrooms: React.Dispatch<React.SetStateAction<number>>;
+  shareRoom: string;
+  setShareRoom: React.Dispatch<React.SetStateAction<string>>;
+  shareWith: string;
+  setShareWith: React.Dispatch<React.SetStateAction<string>>;
+  allowPets: boolean;
+  setAllowPets: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const [bedroomType, setBedroomType] = useState<string>('');
-
-  const [maxValue, setMaxValue] = useState<number>(0);
-
-  const [bedrooms, setBedrooms] = useState<number>(1);
-  const [bathrooms, setBathrooms] = useState<number>(1);
-
-  const [shareRoom, setShareRoom] = useState<string>('');
-  const [shareWith, setShareWith] = useState<string>('');
-
-  const [allowPets, setAllowPets] = useState<boolean>(false);
-
+const FiltersBar = ({
+  region,
+  setRegion,
+  orderBy,
+  setOrderBy,
+  bedroomType,
+  setBedroomType,
+  maxValue,
+  setMaxValue,
+  bedrooms,
+  setBedrooms,
+  bathrooms,
+  setBathrooms,
+  shareRoom,
+  setShareRoom,
+  shareWith,
+  setShareWith,
+  allowPets,
+  setAllowPets,
+}: FiltersBarProps) => {
   return (
     <div className="filters-bar-container">
       <main>

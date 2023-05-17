@@ -21,11 +21,11 @@ const Grid = styled.div<GridProps>`
   gap: ${props => props.gap};
   row-gap: 30px;
 
-  @media (max-width: 1430px) {
+  @media (max-width: 1480px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (max-width: 1050px) {
+  @media (max-width: 1150px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
