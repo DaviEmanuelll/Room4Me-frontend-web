@@ -5,9 +5,14 @@ import Room4MeLogo from 'assets/logo.png';
 import { PrimaryButton } from 'components/Buttons';
 import { useAuth } from 'hooks/auth';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { routesAddresses } from 'routes/routesAddresses';
+import { UserWithoutPassword } from 'types/services';
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const { userData } = useAuth();
+  const user = userData?.user ?? ({} as UserWithoutPassword);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -47,23 +52,28 @@ export const Navbar = () => {
       </ul>
       <div className="login-container">
         {userData === null ? (
-          <PrimaryButton type="button">Entrar</PrimaryButton>
+          <PrimaryButton
+            type="button"
+            onClick={() => navigate(routesAddresses.loginPage)}
+          >
+            Entrar
+          </PrimaryButton>
         ) : (
           <>
-            {userData.avatarLink ? (
+            {user.avatarLink ? (
               <img
-                src={userData.avatarLink}
+                src={user.avatarLink}
                 alt="Foto de perfil"
                 id="user-profile-image"
               />
             ) : (
-              <img src={''} alt="Foto de perfil" id="user-profile-image" />
+              <div id="user-profile-image" />
             )}
             <label
               htmlFor="user-profile-image"
               style={{ display: isMobile ? 'none' : '' }}
             >
-              {userData.name}
+              {user.name}
             </label>
           </>
         )}

@@ -20,7 +20,7 @@ import { routesAddresses } from 'routes/routesAddresses';
 import { createUser } from 'services/userServices';
 
 export const Register = () => {
-  const { userData, setUserLocalData } = useAuth();
+  const { userData } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -125,12 +125,12 @@ export const Register = () => {
       navigate(routesAddresses.loginPage);
       alert('Conta criada com sucesso! Faça Login para acessá-la.');
     } catch (error) {
-      if (error instanceof yup.ValidationError) {
-        setNameError(error.message);
+      if (!(error instanceof yup.ValidationError)) {
+        alert('Problema Inesperado!');
         return;
       }
 
-      alert('Problema Inesperado!');
+      setNameError(error.message);
     }
   }, [avatarFile, email, gender, name, navigate, password]);
 
