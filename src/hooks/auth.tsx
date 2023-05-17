@@ -42,6 +42,32 @@ const AuthContext: React.FC<Props> = ({ children }) => {
     );
   }, []);
 
+  const setApiConfigurationForAuthenticatedUser = useCallback(
+    (token: string) => {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      api.interceptors.response.use(
+        response => response,
+        (error: ServerError) => {
+          const {
+            response: {
+              data: { status },
+            },
+          } = error;
+
+          if (status === 401 || status === 403) {
+            return new Promise(() => {
+              signOut();
+              alert('Seu Token expirou, por favor, faça login novamente');
+            });
+          }
+
+          throw error;
+        },
+      );
+    },
+    [signOut],
+  );
+
   useEffect(() => {
     const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -50,27 +76,17 @@ const AuthContext: React.FC<Props> = ({ children }) => {
     const parsedUser = JSON.parse(user) as UserWithoutPassword;
     const parsedToken = JSON.parse(token) as string;
     setUserData({ user: parsedUser, token: parsedToken });
-  }, []);
+    setApiConfigurationForAuthenticatedUser(parsedToken);
+  }, [setApiConfigurationForAuthenticatedUser]);
 
   const setUserLocalData = useCallback(
     ({ user, token }: AuthenticatedUserData) => {
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
       localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(token));
       setUserData({ user, token });
-
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      api.interceptors.response.use(
-        response => response,
-        (error: ServerError) => {
-          if (error.response.data.status === 403) {
-            return new Promise(() => signOut());
-          }
-
-          throw error;
-        },
-      );
+      setApiConfigurationForAuthenticatedUser(token);
     },
-    [signOut],
+    [setApiConfigurationForAuthenticatedUser],
   );
 
   return (

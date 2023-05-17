@@ -3,64 +3,43 @@ import arrowBack from 'assets/arrow_back.svg';
 import arrowForward from 'assets/arrow_forward.svg';
 import unselectedFavoriteIcon from 'assets/unselectedFavoriteIcon.svg';
 import selectedFavoriteIcon from 'assets/selectedFavoriteIcon.svg';
-import fotoCozinha from 'assets/exampleImages/cozinha.jpg';
-import fotoQuarto from 'assets/exampleImages/quarto.jpg';
-import fotoSala from 'assets/exampleImages/sala.jpg';
 
 import { useState } from 'react';
+import { Property } from 'types/entities/property';
+import { formatNumberToBRCurrency } from 'utils/formatNumberToBRCurrency';
 
 interface CardProps {
-  street: string;
-  address: string;
-  bedroomsQuantity: number;
-  bathroomsQuantity: number;
-  arePetsAllowed: boolean;
+  property: Property;
   isFavorite: boolean;
-  value: number;
+  toggleFavoriteProperty: (
+    propertyId: string,
+    favorite: boolean,
+  ) => Promise<void>;
 }
 
-const Card = (props: CardProps) => {
-  const exampleImages = [
-    {
-      url: fotoCozinha,
-      title: 'Imagem 1',
-    },
-    {
-      url: fotoQuarto,
-      title: 'Imagem 2',
-    },
-    {
-      url: fotoSala,
-      title: 'Imagem 3',
-    },
-  ];
-
-  const [currentImageSliderIndex, setCurrentImageSliderIndex] =
-    useState<number>(0);
-
-  const [isFavorite, setIsFavorite] = useState<boolean>(props.isFavorite);
+const Card = ({
+  property: { id, address, aspects, rent, images },
+  isFavorite,
+  toggleFavoriteProperty,
+}: CardProps) => {
+  const [currentImageSliderIndex, setCurrentImageSliderIndex] = useState(0);
 
   const handleGoToPreviousImage = () => {
     const isFirstImage: boolean = currentImageSliderIndex === 0;
     const newIndex: number = isFirstImage
-      ? exampleImages.length - 1
+      ? images.length - 1
       : currentImageSliderIndex - 1;
     setCurrentImageSliderIndex(newIndex);
   };
 
   const handleGoToNextImage = () => {
-    const isLastImage: boolean =
-      currentImageSliderIndex === exampleImages.length - 1;
-    const newIndex: number = isLastImage ? 0 : currentImageSliderIndex + 1;
+    const isLastImage = currentImageSliderIndex === images.length - 1;
+    const newIndex = isLastImage ? 0 : currentImageSliderIndex + 1;
     setCurrentImageSliderIndex(newIndex);
   };
 
-  const handleGoToEspecificImage = imageIndex => {
+  const handleGoToEspecificImage = (imageIndex: number) => {
     setCurrentImageSliderIndex(imageIndex);
-  };
-
-  const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -68,23 +47,26 @@ const Card = (props: CardProps) => {
       <div className="main-container">
         <div className="image-slider">
           <div className="buttons-group">
-            <button id="arrow-back" onClick={handleGoToPreviousImage}>
-              <img src={arrowBack} alt="<" />
-            </button>
-            <button id="arrow-forward" onClick={handleGoToNextImage}>
-              <img src={arrowForward} alt=">" />
-            </button>
+            {images.length > 1 && (
+              <>
+                <button id="arrow-back" onClick={handleGoToPreviousImage}>
+                  <img src={arrowBack} alt="<" />
+                </button>
+                <button id="arrow-forward" onClick={handleGoToNextImage}>
+                  <img src={arrowForward} alt=">" />
+                </button>
+              </>
+            )}
+
             <div id="image-selector-container">
-              {exampleImages.map((image, imageIndex) => (
+              {images.map(({ id }, index) => (
                 <div
                   id="image-selector"
-                  key={imageIndex}
-                  onClick={() => handleGoToEspecificImage(imageIndex)}
+                  key={id}
+                  onClick={() => handleGoToEspecificImage(index)}
                   style={{
                     color:
-                      currentImageSliderIndex === imageIndex
-                        ? '#FF6700'
-                        : '#4C4652',
+                      currentImageSliderIndex === index ? '#FF6700' : '#4C4652',
                   }}
                 >
                   •
@@ -92,48 +74,58 @@ const Card = (props: CardProps) => {
               ))}
             </div>
           </div>
-          <div
-            className="images-container"
-            style={{
-              backgroundImage: `url(${exampleImages[currentImageSliderIndex].url})`,
-            }}
-          ></div>
+
+          {images.length > 0 && (
+            <div
+              className="images-container"
+              style={{
+                backgroundImage: `url(${images[currentImageSliderIndex].fileLink})`,
+              }}
+            />
+          )}
         </div>
 
         <div className="info-container">
           <div className="description">
             <div id="tag-field"></div>
             <div className="address-group">
-              <div id="street">{props.street}</div>
-              <div id="address">{props.address}</div>
+              <div id="street">{address.street}</div>
+              <div id="address">
+                {address.district}, {address.city}
+              </div>
             </div>
             <div className="aspects">
               <div id="bedrooms">
                 <label>Quartos</label>
-                <span>{props.bedroomsQuantity}</span>
+                <span>{aspects.bedroomsQuantity}</span>
               </div>
               <hr />
               <div id="bathrooms">
                 <label>Banheiros</label>
-                <span>{props.bathroomsQuantity}</span>
+                <span>{aspects.bathroomsQuantity}</span>
               </div>
               <hr />
               <div id="pets">
                 <label>Pets</label>
-                <span>{props.arePetsAllowed ? 'Sim' : 'Não'}</span>
+                <span>{aspects.acceptAnimals ? 'Sim' : 'Não'}</span>
               </div>
             </div>
             <div className="bottom-container">
-              <div id="favorite-button" onClick={handleFavoriteClick}>
-                {isFavorite ? (
-                  <img src={selectedFavoriteIcon} />
-                ) : (
-                  <img src={unselectedFavoriteIcon} />
-                )}
-              </div>
+              <button
+                type="button"
+                id="favorite-button"
+                onClick={() => toggleFavoriteProperty(id, !isFavorite)}
+              >
+                <img
+                  src={
+                    isFavorite ? selectedFavoriteIcon : unselectedFavoriteIcon
+                  }
+                  alt="Favoritar"
+                />
+              </button>
               <div id="value">
                 <label htmlFor="price">Valor</label>
-                <p id="price">{` R$ ${props.value}`}</p>
+                <p id="price">{formatNumberToBRCurrency(rent)}</p>
               </div>
             </div>
           </div>
