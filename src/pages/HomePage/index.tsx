@@ -1,35 +1,23 @@
-import { Container } from './styles';
-import Navbar from 'components/Navbar';
-import { InfoContainer } from 'components/InfoContainer';
-import { InputLabel } from 'components/InputLabels';
-import { Select, TextField } from 'components/Inputs';
-import { PrimaryButton, SecondaryButton } from 'components/Buttons';
-import { useState } from 'react';
 import homePageImage1 from 'assets/homePageImage1.svg';
 import homePageImage2 from 'assets/homePageImage2.svg';
 import homeBannerOne from 'assets/homeBannerOne.svg';
 import homeBannerTwo from 'assets/homeBannerTwo.svg';
 import homePageSection3Figure from 'assets/homePageSection3Figure.svg';
 import homePageSection2Figure from 'assets/homePageSection2Figure.svg';
-import Card from 'components/Card';
 
-/*const cardExample = {
-  street: 'Maria de Medeiros Miranda',
-  address: 'Belo Horizonte, Mossoró',
-  bedroomsQuantity: 2,
-  bathroomsQuantity: 1,
-  arePetsAllowed: false,
-  isFavorite: true,
-  value: 30.0,
-};*/
+import { Container } from './styles';
+import { InfoContainer } from 'components/InfoContainer';
+import { InputLabel } from 'components/InputLabels';
+import { Select, TextField } from 'components/Inputs';
+import { PrimaryButton, SecondaryButton } from 'components/Buttons';
+import { useState } from 'react';
+import { Navbar } from 'components/Navbar';
 
 export const HomePage = () => {
-  const [city, setCity] = useState<string>('');
-  const [district, setDistrict] = useState<string>('');
-  const [maxValue, setMaxValue] = useState<number>(0);
-  const [bedrooms, setBedrooms] = useState<number>(1);
-
-  function handleSearchRoom() {}
+  const [city, setCity] = useState('');
+  const [district, setDistrict] = useState('');
+  const [maxValue, setMaxValue] = useState(0);
+  const [bedrooms, setBedrooms] = useState(1);
 
   const renderFirstSection = (
     <section className="first-section">
@@ -66,7 +54,7 @@ export const HomePage = () => {
             <InputLabel htmlFor="city-input">Valor até</InputLabel>
             <Select
               id="value-range-input"
-              onChange={e => setMaxValue(e.target.value)}
+              onChange={({ target: { value } }) => setMaxValue(Number(value))}
             >
               <option value={500}>até R$ 500</option>
               <option value={1000}>até R$ 1000</option>
@@ -81,14 +69,12 @@ export const HomePage = () => {
               type="number"
               min={1}
               value={bedrooms}
-              onChange={e => setBedrooms(e.target.value)}
+              onChange={({ target: { value } }) => setBedrooms(Number(value))}
             />
           </div>
         </div>
         <div className="search-button-group">
-          <PrimaryButton onClick={handleSearchRoom}>
-            Procurar quarto
-          </PrimaryButton>
+          <PrimaryButton type="button">Procurar quarto</PrimaryButton>
         </div>
       </InfoContainer>
     </section>

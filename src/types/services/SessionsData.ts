@@ -1,6 +1,4 @@
-import { Entity } from 'types/entities';
-
-export interface SessionsData extends Entity {
+export interface SessionsData {
   email: string;
   password: string;
 }

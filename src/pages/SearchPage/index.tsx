@@ -1,4 +1,4 @@
-import Navbar from 'components/Navbar';
+import { Navbar } from 'components/Navbar';
 import { Container } from './styles';
 import FiltersBar from 'components/FiltersBar';
 import Card from 'components/Card';
@@ -9,9 +9,7 @@ export const SearchPage = () => {
       <Navbar />
       <Container>
         <FiltersBar />
-        <main>
-         
-        </main>
+        <main></main>
       </Container>
     </>
   );

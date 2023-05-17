@@ -1,5 +1,5 @@
 import { MainContainer } from './styles';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import loginBackgroundImageUrl from 'assets/login-background.png';
 import { InfoContainer } from 'components/InfoContainer';
 import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
@@ -8,46 +8,70 @@ import { Checkbox } from 'components/Checkbox';
 import { InputLabel } from 'components/InputLabels';
 import nameLogo from 'assets/logo-name.svg';
 import { PrimaryButton } from 'components/Buttons';
+import { useAuth } from 'hooks/auth';
+import { useNavigate } from 'react-router-dom';
+import { routesAddresses } from 'routes/routesAddresses';
+
+import * as yup from 'yup';
+import { createUserSession } from 'services/userServices';
 
 export const LoginPage = () => {
+  const { userData } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('');
-
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
 
   const [keepConnected, setKeepConnected] = useState<boolean>(false);
 
-  function handleSubmit() {
-    if (email === '' || email === undefined) {
-      setEmailErrorMessage('Preencha o campo de email');
-      setEmailError(true);
-    } else if (email.indexOf('@') === -1) {
-      setEmailErrorMessage('O email digitado não é válido');
-      setEmailError(true);
-    } else {
-      setEmailErrorMessage('');
-      setEmailError(false);
-    }
+  useEffect(() => {
+    if (userData === null) return;
+    navigate(routesAddresses.homePage);
+  }, [navigate, userData]);
 
-    if (password === '' || password === undefined) {
-      setPasswordErrorMessage('Preencha o campo de senha');
-      setPasswordError(true);
-    } else if (password.length < 8) {
-      setPasswordErrorMessage('A senha deve conter pelo menos 8 caracteres');
-      setPasswordError(true);
-    } else {
-      setPasswordErrorMessage('');
-      setPasswordError(false);
+  const handleSubmit = useCallback(async () => {
+    const schema = yup.object().shape({
+      email: yup
+        .string()
+        .required('Preencha o campo de email')
+        .email('O email deve ser um endereço válido'),
+      password: yup.string().required('Preencha o campo de senha'),
+    });
+
+    try {
+      await schema.validate(
+        {
+          email,
+          password,
+        },
+        { abortEarly: false },
+      );
+
+      const user = await createUserSession({ email, password });
+    } catch (error) {
+      const errorStates = {
+        email: setEmailError,
+        password: setPasswordError,
+      };
+      const parsedError = error as yup.ValidationError;
+
+      const keysAlreadyVisited: string[] = [];
+      parsedError.inner.forEach(({ path, message }) => {
+        const key = path as keyof typeof errorStates;
+        if (keysAlreadyVisited.includes(key)) return;
+
+        errorStates[key](message);
+        keysAlreadyVisited.push(key);
+      });
     }
-  }
+  }, [email, password]);
 
   return (
     <>
-      <LoginAndRegisterWrapper imgUrl={loginBackgroundImageUrl}>
+      <LoginAndRegisterWrapper imageUrl={loginBackgroundImageUrl}>
         <MainContainer>
           <InfoContainer>
             <main>
@@ -70,11 +94,14 @@ export const LoginPage = () => {
                     type="text"
                     id="email-textfield"
                     value={email}
-                    onChange={event => setEmail(event.target.value)}
+                    onChange={({ target: { value } }) => {
+                      setEmail(value);
+                      setEmailError('');
+                    }}
                     style={{ borderColor: emailError ? '#ff0033' : '' }}
                   />
                   <div className="span-area">
-                    <span id="email-error-span">{emailErrorMessage}</span>
+                    <span id="email-error-span">{emailError}</span>
                   </div>
                 </div>
                 <div id="password-group">
@@ -88,11 +115,14 @@ export const LoginPage = () => {
                     type="password"
                     id="password-textfield"
                     value={password}
-                    onChange={event => setPassword(event.target.value)}
+                    onChange={({ target: { value } }) => {
+                      setPassword(value);
+                      setPasswordError('');
+                    }}
                     style={{ borderColor: passwordError ? '#ff0033' : '' }}
                   />
                   <div className="span-area">
-                    <span id="password-error-span">{passwordErrorMessage}</span>
+                    <span id="password-error-span">{passwordError}</span>
                   </div>
                 </div>
               </div>

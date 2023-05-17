@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container } from './styles';
-import Navbar from 'components/Navbar';
+import { Navbar } from 'components/Navbar';
 import { InfoContainer } from 'components/InfoContainer';
 import { InputLabel } from 'components/InputLabels';
 import { Select, TextField } from 'components/Inputs';

@@ -60,6 +60,45 @@ export const MainContainer = styled.div`
     margin: 30px 0px 10px 0px;
   }
 
+  #avatar-input-group {
+    border: 1px solid #4c4652;
+    border-radius: 16px;
+
+    width: 236px;
+    height: 128px;
+    margin-inline: auto;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s;
+
+    &:hover {
+      border-color: #ff6700;
+    }
+
+    label {
+      position: absolute;
+      top: -18px;
+      background-color: #fff;
+      padding-inline: 6px;
+      font-size: 24px;
+    }
+
+    input {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      opacity: 0;
+      cursor: pointer;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
   .buttons-group {
     display: flex;
     gap: 15px;
@@ -84,8 +123,9 @@ export const MainContainer = styled.div`
     justify-content: center;
 
     img {
-      height: 80px;
-      width: 80px;
+      height: 72px;
+      width: 72px;
+      border-radius: 50%;
     }
   }
 

@@ -1,9 +1,13 @@
 import './styles.css';
 import Room4MeWrittenLogo from 'assets/logo-name.svg';
 import Room4MeLogo from 'assets/logo.png';
+
+import { PrimaryButton } from 'components/Buttons';
+import { useAuth } from 'hooks/auth';
 import { useEffect, useState } from 'react';
 
-const Navbar = () => {
+export const Navbar = () => {
+  const { userData } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -12,7 +16,6 @@ const Navbar = () => {
     };
 
     handleResize();
-
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -20,7 +23,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const renderNavbar = (
+  return (
     <nav>
       <div className="room4me-logo">
         <img
@@ -35,26 +38,36 @@ const Navbar = () => {
           margin: isMobile ? '0px' : '0px 30px',
         }}
       >
-        <li id="search-for-rooms">
+        <li>
           <a href="#">Procurar quarto</a>
         </li>
-        <li id="announce-a-room">
+        <li>
           <a href="#">Anunciar quarto</a>
         </li>
       </ul>
       <div className="login-container">
-        {/*<PrimaryButton>Entrar</PrimaryButton>*/}
-        <img src="" alt="" id="user-profile-image" />
-        <label
-          htmlFor="user-profile-image"
-          style={{ display: isMobile ? 'none' : '' }}
-        >
-          Lucas Paulino
-        </label>
+        {userData === null ? (
+          <PrimaryButton type="button">Entrar</PrimaryButton>
+        ) : (
+          <>
+            {userData.avatarLink ? (
+              <img
+                src={userData.avatarLink}
+                alt="Foto de perfil"
+                id="user-profile-image"
+              />
+            ) : (
+              <img src={''} alt="Foto de perfil" id="user-profile-image" />
+            )}
+            <label
+              htmlFor="user-profile-image"
+              style={{ display: isMobile ? 'none' : '' }}
+            >
+              {userData.name}
+            </label>
+          </>
+        )}
       </div>
     </nav>
   );
-  return <>{renderNavbar}</>;
 };
-
-export default Navbar;

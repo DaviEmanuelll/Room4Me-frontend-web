@@ -1,11 +1,11 @@
-import registerBackgroundImageUrl from 'assets/signup-background.jpg';
+import registerBackgroundavatarUrl from 'assets/signup-background.jpg';
 import nameLogo from 'assets/logo-name.svg';
 import addImageIcon from 'assets/add-img-icon.svg';
 import stepOneIcon from 'assets/signup-state-one.svg';
 import stepTwoIcon from 'assets/signup-state-two.svg';
 
 import { MainContainer } from './styles';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { OutlinedButton, PrimaryButton } from 'components/Buttons';
 import { InfoContainer } from 'components/InfoContainer';
 import { LoginAndRegisterWrapper } from 'components/LoginAndRegisterWrapper';
@@ -14,8 +14,15 @@ import { InputLabel } from 'components/InputLabels';
 
 import * as yup from 'yup';
 import { Gender } from 'types/Gender';
+import { useAuth } from 'hooks/auth';
+import { useNavigate } from 'react-router-dom';
+import { routesAddresses } from 'routes/routesAddresses';
+import { createUser } from 'services/userServices';
 
 export const Register = () => {
+  const { userData, setUserLocalData } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -25,25 +32,34 @@ export const Register = () => {
   const [passwordConfirmationError, setPasswordConfirmationError] =
     useState('');
 
-  const [imageUrl, setImageUrl] = useState('');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
+
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const [gender, setGender] = useState<Gender>('Male');
 
   const [isFirstStepComplete, setIsFirstStepComplete] = useState(false);
 
-  const handleImageChange = ({
-    currentTarget: { files },
-  }: React.FormEvent<HTMLInputElement>) => {
-    if (files === null) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
+  useEffect(() => {
+    if (userData === null) return;
+    navigate(routesAddresses.homePage);
+  }, [navigate, userData]);
 
-    reader.onload = ({ target }) => {
-      if (target === null) return;
-      setImageUrl(target.result as string);
-    };
-  };
+  const handleImageChange = useCallback(
+    ({ currentTarget: { files } }: React.FormEvent<HTMLInputElement>) => {
+      if (files === null) return;
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+
+      reader.onload = ({ target }) => {
+        if (target === null) return;
+        setAvatarUrl(target.result as string);
+        setAvatarFile(files[0]);
+      };
+    },
+    [],
+  );
 
   const handleFirstStepSubmit = useCallback(async () => {
     const schema = yup.object().shape({
@@ -97,14 +113,29 @@ export const Register = () => {
 
     try {
       await schema.validate({ name }, { abortEarly: false });
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('gender', gender);
+      if (avatarFile !== null) formData.append('avatar', avatarFile);
+
+      await createUser(formData);
+      navigate(routesAddresses.loginPage);
+      alert('Conta criada com sucesso! Faça Login para acessá-la.');
     } catch (error) {
-      const parsedError = error as yup.ValidationError;
-      setNameError(parsedError.message);
+      if (error instanceof yup.ValidationError) {
+        setNameError(error.message);
+        return;
+      }
+
+      alert('Problema Inesperado!');
     }
-  }, [name]);
+  }, [avatarFile, email, gender, name, navigate, password]);
 
   const renderFirstStepRegistration = (
-    <LoginAndRegisterWrapper imageUrl={registerBackgroundImageUrl}>
+    <LoginAndRegisterWrapper imageUrl={registerBackgroundavatarUrl}>
       <MainContainer>
         <InfoContainer>
           <main>
@@ -195,7 +226,7 @@ export const Register = () => {
   );
 
   const renderSecondStepRegistration = (
-    <LoginAndRegisterWrapper imageUrl={registerBackgroundImageUrl}>
+    <LoginAndRegisterWrapper imageUrl={registerBackgroundavatarUrl}>
       <MainContainer>
         <InfoContainer style={{ height: '74%' }}>
           <main>
@@ -206,13 +237,13 @@ export const Register = () => {
                 <img src={stepTwoIcon} alt="step one icon" />
               </div>
             </div>
-            <div className="input-group">
-              <label htmlFor="profile-image-input">Foto de perfil</label>
+            <div className="input-group" id="avatar-input-group">
+              <label htmlFor="profile-image-input">Foto de Perfil</label>
               <div>
                 <div id="profile-image-group">
                   <img
                     id="profile-image"
-                    src={imageUrl || addImageIcon}
+                    src={avatarUrl || addImageIcon}
                     alt="add image icon"
                   />
                 </div>

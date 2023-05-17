@@ -16,6 +16,11 @@ ul {
 
 a {
   text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #ff6700;
 }
 
 .nav-links {

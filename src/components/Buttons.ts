@@ -10,6 +10,7 @@ export const PrimaryButton = styled.button`
   width: 100%;
   height: 40px;
   outline: none;
+  transition: 0.3s;
 
   &:hover {
     background-color: #bf4d00;

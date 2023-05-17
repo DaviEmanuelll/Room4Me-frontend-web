@@ -13,12 +13,12 @@ export const createUser = async (userData: FormData) => {
 };
 
 export const createUserSession = async (sessionsData: SessionsData) => {
-  const { data } = await api.post<UserWithoutPassword>(
+  const { data, headers } = await api.post<UserWithoutPassword>(
     `${servicesPrefix}/sessions`,
     sessionsData,
   );
 
-  return data;
+  return { user: data, token: headers.getAuthorization };
 };
 
 export const updateUser = async (userData: FormData) => {
