@@ -16,14 +16,23 @@ export const SearchPage = () => {
   const { userData } = useAuth();
 
   const [properties, setProperties] = useState<Property[]>([]);
+  const [searchedPropertiesIndexes, setSearchedPropertiesIndexes] = useState<
+    number[]
+  >([]);
   const [favoritePropertiesIds, setFavoritePropertiesIds] = useState<string[]>(
     [],
   );
 
   useEffect(() => {
-    findAllProperties().then(setProperties);
+    findAllProperties().then(properties => {
+      setProperties(properties);
+      setSearchedPropertiesIndexes([...Array(properties.length).keys()]);
+    });
+  }, []);
 
+  useEffect(() => {
     if (userData === null) return;
+
     findAllFavoritePropertiesByUser(userData.user.id).then(favoriteProperties =>
       setFavoritePropertiesIds(
         favoriteProperties.map(({ propertyId }) => propertyId),
@@ -40,6 +49,11 @@ export const SearchPage = () => {
 
   const toggleFavoriteProperty = useCallback(
     async (propertyId: string, favorite: boolean) => {
+      if (userData === null) {
+        alert('É preciso estar logado para favoritar uma propriedade!');
+        return;
+      }
+
       if (favorite) {
         const { propertyId: newId } = await createFavoriteProperty(propertyId);
         setFavoritePropertiesIds(previousIds => [...previousIds, newId]);
@@ -51,49 +65,25 @@ export const SearchPage = () => {
         previousIds.filter(id => id !== propertyId),
       );
     },
-    [],
+    [userData],
   );
-
-  const [region, setRegion] = useState('');
-  const [orderBy, setOrderBy] = useState('');
-  const [bedroomType, setBedroomType] = useState('');
-  const [maxValue, setMaxValue] = useState(0);
-  const [bedrooms, setBedrooms] = useState(1);
-  const [bathrooms, setBathrooms] = useState(1);
-  const [shareRoom, setShareRoom] = useState('');
-  const [shareWith, setShareWith] = useState('');
-  const [allowPets, setAllowPets] = useState(false);
 
   return (
     <>
       <Navbar />
       <FiltersBar
-        region={region}
-        setRegion={setRegion}
-        orderBy={orderBy}
-        setOrderBy={setOrderBy}
-        bedroomType={bedroomType}
-        setBedroomType={setBedroomType}
-        maxValue={maxValue}
-        setMaxValue={setMaxValue}
-        bedrooms={bedrooms}
-        setBedrooms={setBedrooms}
-        bathrooms={bathrooms}
-        setBathrooms={setBathrooms}
-        shareRoom={shareRoom}
-        setShareRoom={setShareRoom}
-        shareWith={shareWith}
-        setShareWith={setShareWith}
-        allowPets={allowPets}
-        setAllowPets={setAllowPets}
+        properties={properties}
+        setSearchedPropertiesIndexes={indexes =>
+          setSearchedPropertiesIndexes(indexes)
+        }
       />
       <Container>
         <Grid columns={4} gap="1px">
-          {properties.map(property => (
+          {searchedPropertiesIndexes.map(index => (
             <Card
-              key={property.id}
-              property={property}
-              isFavorite={propertyIsFavorite(property)}
+              key={properties[index].id}
+              property={properties[index]}
+              isFavorite={propertyIsFavorite(properties[index])}
               toggleFavoriteProperty={toggleFavoriteProperty}
             />
           ))}

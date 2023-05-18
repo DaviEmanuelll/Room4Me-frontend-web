@@ -31,13 +31,23 @@
 }
 
 #arrow-back {
-  top: 42%;
+  top: 50%;
   left: 12px;
 }
 
+#arrow-back img {
+  margin-top: 4px;
+  margin-left: -4px;
+}
+
 #arrow-forward {
-  top: 42%;
+  top: 50%;
   right: 12px;
+}
+
+#arrow-forward img {
+  margin-top: 4px;
+  margin-right: -4px;
 }
 
 #image-selector-container {
