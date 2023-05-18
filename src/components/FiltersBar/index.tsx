@@ -220,13 +220,15 @@ export const FiltersBar = ({
               </InputLabel>
               <Select
                 id="share-with-gender-input"
-                value={shareWithSameGenderOption ? 'same-gender' : 'whatever'}
+                value={
+                  shareWithSameGenderOption ? 'same-gender' : 'different-gender'
+                }
                 onChange={({ target: { value } }) =>
                   setShareWithSameGenderOption(value === 'same-gender')
                 }
               >
                 <option value={'same-gender'}>Mesmo gênero</option>
-                <option value={'whatever'}>Não importa</option>
+                <option value={'different-gender'}>Gênero diferente</option>
               </Select>
             </div>
           </div>

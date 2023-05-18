@@ -6,6 +6,7 @@ import { Register } from 'pages/Register';
 import { SearchPage } from 'pages/SearchPage';
 import { AnnouncePage } from 'pages/AnnouncePage';
 import { RoomDetails } from 'pages/RoomDetails';
+import { ProfilePage } from 'pages/ProfilePage';
 
 const loginPage: RouteObject = {
   path: routesAddresses.loginPage,
@@ -23,7 +24,6 @@ const searchPage: RouteObject = {
   path: routesAddresses.searchPage,
   element: <SearchPage />,
 };
-
 const announcePage: RouteObject = {
   path: routesAddresses.announcePage,
   element: <AnnouncePage />,
@@ -34,6 +34,11 @@ const roomDetails: RouteObject = {
   element: <RoomDetails />,
 };
 
+const profilePage: RouteObject = {
+  path: routesAddresses.profilePage,
+  element: <ProfilePage />,
+};
+
 export default [
   homePage,
   loginPage,
@@ -41,4 +46,5 @@ export default [
   searchPage,
   announcePage,
   roomDetails,
+  profilePage,
 ];

@@ -11,7 +11,7 @@ import { UserWithoutPassword } from 'types/services';
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const { userData } = useAuth();
+  const { userData, signOut } = useAuth();
   const user = userData?.user ?? ({} as UserWithoutPassword);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -83,12 +83,13 @@ export const Navbar = () => {
             ) : (
               <div id="user-profile-image" />
             )}
-            <label
-              htmlFor="user-profile-image"
+            <button
+              type="button"
+              onClick={signOut}
               style={{ display: isMobile ? 'none' : '' }}
             >
               {user.name}
-            </label>
+            </button>
           </>
         )}
       </div>

@@ -5,4 +5,5 @@ export const routesAddresses = {
   searchPage: '/search',
   announcePage: '/announce',
   roomDetails: '/room-details',
+  profilePage: '/profile',
 };
