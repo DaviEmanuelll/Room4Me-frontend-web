@@ -30,17 +30,16 @@ export const Navbar = () => {
 
   return (
     <nav>
-      <div className="room4me-logo">
-        <button
-          id="logo-button"
-          onClick={() => navigate(routesAddresses.homePage)}
-        >
-          <img
-            src={isMobile ? Room4MeLogo : Room4MeWrittenLogo}
-            alt="Room4Me logo"
-          />
-        </button>
-      </div>
+      <button
+        type="button"
+        className="room4me-logo"
+        onClick={() => navigate(routesAddresses.homePage)}
+      >
+        <img
+          src={isMobile ? Room4MeLogo : Room4MeWrittenLogo}
+          alt="Room4Me logo"
+        />
+      </button>
       <ul
         className="nav-links"
         style={{
@@ -49,10 +48,20 @@ export const Navbar = () => {
         }}
       >
         <li>
-          <button onClick={() => navigate('/search')}>Procurar quarto</button>
+          <button
+            type="button"
+            onClick={() => navigate(routesAddresses.searchPage)}
+          >
+            Procurar quarto
+          </button>
         </li>
         <li>
-          <button onClick={() => navigate('/announce')}>Anunciar quarto</button>
+          <button
+            type="button"
+            onClick={() => navigate(routesAddresses.announcePage)}
+          >
+            Anunciar quarto
+          </button>
         </li>
       </ul>
       <div className="login-container">

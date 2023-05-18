@@ -1,85 +1,68 @@
 import { Navbar } from 'components/Navbar';
-import { Container } from './styles';
+import Grid, { Container } from './styles';
 import { FiltersBar } from 'components/FiltersBar';
 import Card from 'components/Card';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Property } from 'types/entities/property';
+import { findAllProperties } from 'services/propertyServices';
+import {
+  createFavoriteProperty,
+  deleteFavoriteProperty,
+  findAllFavoritePropertiesByUser,
+} from 'services/favoritePropertyServices';
+import { useAuth } from 'hooks/auth';
 
 export const SearchPage = () => {
-  const cardsData = [
-    {
-      street: 'Rua B',
-      address: '5678',
-      bedroomsQuantity: 2,
-      bathroomsQuantity: 1,
-      arePetsAllowed: false,
-      isFavorite: true,
-      value: 150000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-    {
-      street: 'Rua C',
-      address: '91011',
-      bedroomsQuantity: 4,
-      bathroomsQuantity: 3,
-      arePetsAllowed: true,
-      isFavorite: true,
-      value: 300000,
-    },
-  ];
+  const { userData } = useAuth();
 
-  const [region, setRegion] = useState<string>('');
-  const [orderBy, setOrderBy] = useState<string>('');
-  const [bedroomType, setBedroomType] = useState<string>('');
-  const [maxValue, setMaxValue] = useState<number>(0);
-  const [bedrooms, setBedrooms] = useState<number>(1);
-  const [bathrooms, setBathrooms] = useState<number>(1);
-  const [shareRoom, setShareRoom] = useState<string>('');
-  const [shareWith, setShareWith] = useState<string>('');
-  const [allowPets, setAllowPets] = useState<boolean>(false);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [favoritePropertiesIds, setFavoritePropertiesIds] = useState<string[]>(
+    [],
+  );
+
+  useEffect(() => {
+    findAllProperties().then(setProperties);
+
+    if (userData === null) return;
+    findAllFavoritePropertiesByUser(userData.user.id).then(favoriteProperties =>
+      setFavoritePropertiesIds(
+        favoriteProperties.map(({ propertyId }) => propertyId),
+      ),
+    );
+  }, [userData]);
+
+  const propertyIsFavorite = useCallback(
+    ({ id: propertyId }: Property) => {
+      return favoritePropertiesIds.findIndex(id => id === propertyId) !== -1;
+    },
+    [favoritePropertiesIds],
+  );
+
+  const toggleFavoriteProperty = useCallback(
+    async (propertyId: string, favorite: boolean) => {
+      if (favorite) {
+        const { propertyId: newId } = await createFavoriteProperty(propertyId);
+        setFavoritePropertiesIds(previousIds => [...previousIds, newId]);
+        return;
+      }
+
+      await deleteFavoriteProperty(propertyId);
+      setFavoritePropertiesIds(previousIds =>
+        previousIds.filter(id => id !== propertyId),
+      );
+    },
+    [],
+  );
+
+  const [region, setRegion] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [bedroomType, setBedroomType] = useState('');
+  const [maxValue, setMaxValue] = useState(0);
+  const [bedrooms, setBedrooms] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const [shareRoom, setShareRoom] = useState('');
+  const [shareWith, setShareWith] = useState('');
+  const [allowPets, setAllowPets] = useState(false);
 
   return (
     <>
@@ -105,8 +88,16 @@ export const SearchPage = () => {
         setAllowPets={setAllowPets}
       />
       <Container>
-        <FiltersBar />
-        <main></main>
+        <Grid columns={4} gap="1px">
+          {properties.map(property => (
+            <Card
+              key={property.id}
+              property={property}
+              isFavorite={propertyIsFavorite(property)}
+              toggleFavoriteProperty={toggleFavoriteProperty}
+            />
+          ))}
+        </Grid>
       </Container>
     </>
   );

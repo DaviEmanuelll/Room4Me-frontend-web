@@ -146,8 +146,6 @@
 }
 
 .bottom-container #favorite-button {
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -155,6 +153,13 @@
   cursor: pointer;
 }
 
-.bottom-container #favorite-button:hover {
-  cursor: pointer;
+.bottom-container #favorite-button img {
+  transition: 0.3s;
+  width: 36px;
+  height: 36px;
+}
+
+.bottom-container #favorite-button img:hover {
+  width: 40px;
+  height: 40px;
 }

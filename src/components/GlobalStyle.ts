@@ -8,4 +8,10 @@ export const GlobalStyle = createGlobalStyle`
     color: #4C4652;
     font-family: 'Open Sans', sans-serif;
   }
+
+  button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+  }
 `;
