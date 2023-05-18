@@ -11,16 +11,26 @@ nav {
   z-index: 9999;
 }
 
+#logo-button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 ul {
   list-style-type: none;
 }
 
-a {
+button {
   text-decoration: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
   transition: 0.3s;
 }
 
-a:hover {
+button:hover {
   color: #ff6700;
 }
 

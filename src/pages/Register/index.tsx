@@ -39,7 +39,7 @@ export const Register = () => {
   const [nameError, setNameError] = useState('');
   const [gender, setGender] = useState<Gender>('Male');
 
-  const [isFirstStepComplete, setIsFirstStepComplete] = useState(false);
+  const [isFirstStepComplete, setIsFirstStepComplete] = useState(true);
 
   useEffect(() => {
     if (userData === null) return;

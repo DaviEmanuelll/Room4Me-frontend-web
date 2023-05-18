@@ -24,6 +24,9 @@ export const Container = styled.div`
 
     @media (max-width: 1000px) {
       flex-direction: column;
+      height: 1100px;
+      margin-top: 580px;
+      margin-bottom: 30px;
     }
 
     h3 {
@@ -31,6 +34,78 @@ export const Container = styled.div`
       color: #ff6700;
     }
 
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 30px 0px 10px 0px;
+    }
+
+    #room-image-input-group {
+      border: 1px solid #4c4652;
+      border-radius: 16px;
+
+      width: 236px;
+      height: 128px;
+      margin-inline: auto;
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.4s;
+
+      &:hover {
+        border-color: #ff6700;
+      }
+
+      label {
+        position: absolute;
+        top: -18px;
+        background-color: #fffcf9;
+        padding-inline: 6px;
+        font-size: 24px;
+      }
+
+      input {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        opacity: 0;
+        cursor: pointer;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    #image-group {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      img {
+        height: 72px;
+        width: 72px;
+        border-radius: 50%;
+      }
+    }
+
+    #description-input {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.75px;
+      line-height: 14px;
+      display: block;
+      width: 100%;
+      border-radius: 12px;
+      background: transparent;
+      border: solid 1.5px #4c4652;
+      color: rgb(33, 33, 33);
+      padding: 15px;
+      outline: none;
+    }
     .room-data-container {
       height: 100%;
       width: 30%;
@@ -39,7 +114,8 @@ export const Container = styled.div`
       align-items: center;
       justify-content: center;
       gap: 20px;
-      margin: 0px 30px;
+      margin: 30px 30px;
+      padding: 0px 30px;
 
       @media (max-width: 1000px) {
         width: 100%;
@@ -52,13 +128,14 @@ export const Container = styled.div`
 
     .second-container {
       height: 100%;
-      width: 70%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 20px;
-      margin: 0px 30px;
+      margin: 0px 20px;
+      padding: 0px 30px;
 
       .address-container {
         width: 100%;
@@ -86,11 +163,11 @@ export const Container = styled.div`
           .condominium-input-group {
             width: 100%;
           }
-          .apartment-input-group {
-            width: 60%;
+          .complement-input-group {
+            width: 100%;
           }
           .block-input-group {
-            width: 60%;
+            width: 100%;
           }
         }
 
@@ -147,10 +224,15 @@ export const Container = styled.div`
         .second-line-aspects {
           display: flex;
           justify-content: space-between;
-          margin: 20px 0px;
-          gap: 20px;
+          align-items: center;
+          margin: 20px auto;
+          gap: 10px;
 
-          .share-room-input-group {
+          .garage-input-group {
+            width: 100%;
+          }
+
+          .furnished-input-group {
             width: 100%;
           }
 
@@ -165,6 +247,9 @@ export const Container = styled.div`
 
         button {
           margin-top: 20px;
+          @media (max-width: 1000px) {
+            margin-bottom: 50px;
+          }
         }
       }
     }

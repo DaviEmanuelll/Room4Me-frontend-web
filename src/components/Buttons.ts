@@ -34,6 +34,10 @@ export const OutlinedButton = styled.button`
     background-color: #ff6700;
     cursor: pointer;
   }
+
+  &:hover img {
+    filter: brightness(0) invert(1);
+  }
 `;
 
 export const SecondaryButton = styled.button`
