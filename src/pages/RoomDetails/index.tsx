@@ -16,6 +16,9 @@ import fotoQuarto from 'assets/exampleImages/quarto.jpg';
 import fotoSala from 'assets/exampleImages/sala.jpg';
 import arrowBack from 'assets/arrow_back.svg';
 import arrowForward from 'assets/arrow_forward.svg';
+import { TextField } from 'components/Inputs';
+import { useAuth } from 'hooks/auth';
+import { UserWithoutPassword } from 'types/services';
 
 export const RoomDetails = () => {
   const [propertyTitle, setPropertyTitle] = useState(
@@ -72,6 +75,9 @@ export const RoomDetails = () => {
   const handleGoToEspecificImage = imageIndex => {
     setCurrentImageSliderIndex(imageIndex);
   };
+
+  const { userData } = useAuth();
+  const user = userData?.user ?? ({} as UserWithoutPassword);
 
   const exampleImages = [
     {
@@ -264,11 +270,20 @@ export const RoomDetails = () => {
     <section className="third-section">
       <h3>Dúvidas</h3>
       <div className="add-question-container">
-        <input
-          id="new-question-input"
-          type="text"
+        {user.avatarLink ? (
+          <img
+            src={user.avatarLink}
+            alt="Foto de perfil"
+            id="user-profile-image"
+          />
+        ) : (
+          <div id="user-profile-image" />
+        )}
+        <TextField
           placeholder="Escreva sua dúvida..."
+          id="new-question-input"
         />
+        <PrimaryButton id="add-question-button">+</PrimaryButton>
       </div>
     </section>
   );

@@ -138,7 +138,7 @@ export const Container = styled.div`
     }
 
     #publish-at {
-      color: #A6A6A6;
+      color: #a6a6a6;
     }
 
     .address-container {
@@ -268,13 +268,33 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
+    h3 {
+      font-weight: bold;
+    }
+
+    #user-profile-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #ffdac2;
+    }
 
     .add-question-container {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 40px 0px;
+      input {
+        width: 400px;
+      }
 
-      #new-question-input {
+      #add-question-button {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
