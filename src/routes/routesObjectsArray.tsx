@@ -5,6 +5,7 @@ import { LoginPage } from 'pages/LoginPage';
 import { Register } from 'pages/Register';
 import { SearchPage } from 'pages/SearchPage';
 import { AnnouncePage } from 'pages/AnnouncePage';
+import { ProfilePage } from 'pages/ProfilePage';
 
 const loginPage: RouteObject = {
   path: routesAddresses.loginPage,
@@ -22,10 +23,12 @@ const searchPage: RouteObject = {
   path: routesAddresses.searchPage,
   element: <SearchPage />,
 };
-
 const announcePage: RouteObject = {
   path: routesAddresses.announcePage,
   element: <AnnouncePage />,
 };
-
-export default [homePage, loginPage, register, searchPage, announcePage];
+const profilePage: RouteObject = {
+  path: routesAddresses.profilePage,
+  element: <ProfilePage />,
+};
+export default [homePage, loginPage, register, searchPage, announcePage, profilePage];

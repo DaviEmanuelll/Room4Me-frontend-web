@@ -4,4 +4,5 @@ export const routesAddresses = {
   register: '/register',
   searchPage: '/search',
   announcePage: '/announce',
+  profilePage: '/profile'
 };
