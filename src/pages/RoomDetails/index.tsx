@@ -294,7 +294,6 @@ export const RoomDetails = () => {
       <Container>
         {renderFirstSection}
         {renderSecondSection}
-        {renderThirdSection}
       </Container>
     </>
   );
