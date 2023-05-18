@@ -1,8 +1,8 @@
 import ProfileImage from 'assets/img/profileImage.png';
 import CallIcon from 'assets/img/call-icon.png';
 import MesageIcon from 'assets/img/mesage-icon.png';
-import AlternateIcon from 'assets/img/call-icon.png';
-import MailIcon from 'assets/img/call-icon.png';
+import AlternateIcon from 'assets/img/alternate_icon.png';
+import MailIcon from 'assets/img/mail-icon.png';
 
 import { useState } from 'react';
 import { Container } from './styles';
@@ -11,55 +11,68 @@ import { InfoContainer } from 'components/InfoContainer';
 import { InputLabel } from 'components/InputLabels';
 import { Select, TextField } from 'components/Inputs';
 import { PrimaryButton } from 'components/Buttons';
+import { useAuth } from 'hooks/auth';
 
-export const ProfilePage = () => {
+interface UserProps {
+    name: string;
+    gender: string;
+    avatarLink: number;
+    callNumber: string;
+    whatsappNumber: string;
+    instagram: string;
+    email: string;
+    favoriteProperties: number;
+    announcedProperties: number;
+}
+
+export const ProfilePage = (props: UserProps) => {
+    const {userData} = useAuth();
+
   return (
     <>
       <Navbar />
       <Container>
       <section id="header">
-            <img id="image-profile" src={ProfileImage} alt="">
+            <img id="image-profile" src={ProfileImage} alt=""/>
             <div id="heading">
                 <span id="user-name">
-                    Nome
+                {props.name}
                 </span>
-                <span id="user-gender">Genero</span>
+                <span id="user-gender">{props.gender}</span>
             </div>
             <div id="user-data">
-                <label className="title">Descrição</label>
-                <span>Forem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. </span>
                 <div id="user-contact">
                     <label className="title">Dados para contato</label>
                     <div className="line">
                         <div className="in-line">
                             <div className="contact">
                                 <label className="contact-name">Ligação</label>
-                                <img className="contact-image" src= {CallIcon}  alt="Icone telefone">
+                                <img className="contact-image" src= {CallIcon}  alt="Icone telefone"/>
                             </div>
-                            <span>+55 84 98747-6062</span>
+                            <span>{props.callNumber}</span>
                         </div>
                         <div className="in-line">
                             <div className="contact">
                                 <label className="contact-name">Instagram</label>
-                                <img className="contact-image" src="../../img/alternate_icon.png" alt="Icone telefone">
+                                <img className="contact-image" src= {AlternateIcon} alt="Icone telefone"/>
                             </div>
-                            <span>daviemanuel</span>
+                            <span>{props.instagram}</span>
                         </div>
                     </div>
                     <div className="line">
                         <div className="in-line">
                             <div className="contact">
                                 <label className="contact-name">Mensagem</label>
-                                <img className="contact-image" src={MesageIcon} alt="Icone telefone">
+                                <img className="contact-image" src={MesageIcon} alt="Icone telefone"/>
                             </div>
-                            <span>+55 84 98747-6062</span>
+                            <span>{props.whatsappNumber}</span>
                         </div>
                         <div className="in-line">
                             <div className="contact">
                                 <label className="contact-name">Email</label>
-                                <img className="contact-image" src={MailIcon} alt="Icone telefone">
+                                <img className="contact-image" src={MailIcon} alt="Icone telefone"/>
                             </div>
-                            <span>davi@gmail.com</span>
+                            <span>{props.email}</span>
                         </div>
                     </div>
                 </div>

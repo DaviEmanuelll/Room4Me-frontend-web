@@ -10,7 +10,7 @@ export const Container = styled.div`
   height: 100vh;
   background-color: #FFFCF9;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 
   #header {
     width: 100%;
@@ -20,8 +20,7 @@ export const Container = styled.div`
 
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-
+    gap: 16px;
     position: relative;
 
     @media (max-width: 1000px) {
@@ -39,13 +38,16 @@ export const Container = styled.div`
         justify-content: center;
         align-items: left;
         gap: 4px;
+        border-radius: 0px 0px 64px 0px;
     }
 
     #image-profile {
         width: 200px;
         height: 200px;
         position: absolute;
+        margin-top: 40px;
         margin-left: 10%;
+        border-radius: 50%;
     }
 
     #user-data {
@@ -73,14 +75,17 @@ export const Container = styled.div`
     }
 
     #user-contact {
-        margin-top: 8px;
+        margin-top: 18px;
+        margin-botton: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .line {
         display: flex;
         justify-content: left;
         gap: 64px;
-        flex: 1;
     }
     .in-line {
         display: flex;
@@ -109,7 +114,7 @@ export const Container = styled.div`
     font-size: 24px;
     font-weight: 700;
     margin-left: 10%;
-    color: #FF6700;
+    font-color: #FF6700;
 }
 
 `;
